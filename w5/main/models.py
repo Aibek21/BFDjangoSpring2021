@@ -1,5 +1,4 @@
 from django.db import models
-from main.models import Test
 
 
 class Publisher(models.Model):
@@ -27,12 +26,36 @@ class Author(models.Model):
         verbose_name_plural = 'Авторы'
 
 
+class BookManager(models.Manager):
+
+    def get_by_author_with_relation(self, author_id):
+        return self.get_related().filter(author_id=author_id)
+
+    def get_by_author_without_relation(self, author_id):
+        return self.filter(author_id=author_id)
+
+    def get_related(self):
+        return self.select_related('author', 'publisher')
+
+
+class BookQuerySet(models.QuerySet):
+
+    def get_by_author(self, author_id):
+        return self.get_related().filter(author_id=author_id)
+
+    def get_related(self):
+        return self.select_related('author', 'publisher')
+
+
 class Book(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True, verbose_name='Название')
     publication_date = models.DateField(verbose_name='Дата публикации')
     num_pages = models.IntegerField(default=0, verbose_name='Количество страниц')
     author = models.ForeignKey(Author, on_delete=models.RESTRICT, related_name='books', verbose_name='Автор')
     publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT, related_name='books', verbose_name='Издатель')
+
+    # objects = BookManager()
+    objects = BookQuerySet.as_manager()
 
     class Meta:
         ordering = ['-publication_date']
