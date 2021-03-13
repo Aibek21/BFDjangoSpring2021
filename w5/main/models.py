@@ -51,8 +51,9 @@ class Book(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True, verbose_name='Название')
     publication_date = models.DateField(verbose_name='Дата публикации')
     num_pages = models.IntegerField(default=0, verbose_name='Количество страниц')
-    author = models.ForeignKey(Author, on_delete=models.RESTRICT, related_name='books', verbose_name='Автор')
-    publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT, related_name='books', verbose_name='Издатель')
+    is_active = models.BooleanField(default=True)
+    authors = models.ManyToManyField(Author)
+    publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT, verbose_name='Издатель')
 
     # objects = BookManager()
     objects = BookQuerySet.as_manager()
@@ -61,3 +62,14 @@ class Book(models.Model):
         ordering = ['-publication_date']
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
+        abstract = True
+
+
+
+class HardBook(Book):
+    width = models.IntegerField()
+    height = models.IntegerField()
+
+
+class EBook(Book):
+    size = models.IntegerField()
