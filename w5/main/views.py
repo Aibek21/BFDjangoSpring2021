@@ -1,21 +1,21 @@
-from django.shortcuts import render
+import logging
 from rest_framework import generics, mixins, viewsets
-from main.models import Book, Author
-from main.serializers import BookSerializer, AuthorSerializer, BookFullSerializer
+from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework.decorators import action
-from django_filters.rest_framework import DjangoFilterBackend
-from main.filters import BookFilter
-from rest_framework import filters
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
-from rest_framework.decorators import api_view
+
+from main.models import Book, Author
+from main.serializers import BookSerializer, AuthorSerializer, BookFullSerializer
+from main.permissions import PublisherPermission, AuthorPermission
+
+logger = logging.getLogger(__name__)
 
 
 class BookViewSet(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     # queryset = Book.objects.all()
     serializer_class = BookSerializer
     pagination_class = LimitOffsetPagination
@@ -42,6 +42,22 @@ class BookViewSet(mixins.ListModelMixin,
         return BookSerializer
 
     # def get_permissions(self):
+    #     logger.debug('get_permissions')
+    #     if self.action == 'create':
+    #         permission_classes = [PublisherPermission]
+    #     else:
+    #         permission_classes = [IsAuthenticated]
+    #     return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save()
+        logger.debug(f'Book object created, ID: {serializer.instance}')
+        logger.info(f'Book object created, ID: {serializer.instance}')
+        logger.warning(f'Book object created, ID: {serializer.instance}')
+        logger.error(f'Book object created, ID: {serializer.instance}')
+        logger.critical(f'Book object created, ID: {serializer.instance}')
+
+    # def get_permissions(self):
     #     if self.action == 'list':
     #         permission_classes = (AllowAny,)
     #     else:
@@ -53,8 +69,10 @@ class BookViewSet(mixins.ListModelMixin,
     #     serializer = BookSerializer(self.get_queryset(), many=True)
     #     return Response(serializer.data)
 
-    @action(methods=['GET'], detail=False, url_path='inactive', url_name='in_active', permission_classes=(AllowAny,))
+    @action(methods=['GET'], detail=False, url_path='inactive', url_name='in_active',
+            permission_classes=(AuthorPermission,))
     def not_active(self, request):
+        logger.debug('not_active')
         # filter = BookFilter(request.GET, queryset=Book.objects.all())
         # queryset = Book.objects.filter(is_active=False)
         serializer = BookSerializer(self.get_queryset(), many=True)

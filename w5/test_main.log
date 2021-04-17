@@ -1,0 +1,4 @@
+INFO -- 2021-04-17 09:01:21,277: Book object created, ID: Book object (19)
+WARNING -- 2021-04-17 09:01:21,278: Book object created, ID: Book object (19)
+ERROR -- 2021-04-17 09:01:21,278: Book object created, ID: Book object (19)
+CRITICAL -- 2021-04-17 09:01:21,278: Book object created, ID: Book object (19)
