@@ -1,0 +1,11 @@
+2021-04-17 14:44:15,265 -- DEBUG:10 -- debug message shows: Someone
+2021-04-17 14:44:15,265 -- INFO:20 -- info
+2021-04-17 14:44:15,265 -- WARNING:30 -- warning
+2021-04-17 14:44:15,265 -- ERROR:40 -- error
+2021-04-17 14:44:15,265 -- CRITICAL:50 -- critical
+2021-04-17 14:44:15,265 -- CRITICAL:50 -- critical
+2021-04-17 14:44:33,360 -- DEBUG:10 -- debug message shows: Someone
+2021-04-17 14:44:33,360 -- INFO:20 -- info
+2021-04-17 14:44:33,360 -- WARNING:30 -- warning
+2021-04-17 14:44:33,360 -- ERROR:40 -- error
+2021-04-17 14:44:33,360 -- CRITICAL:50 -- critical
