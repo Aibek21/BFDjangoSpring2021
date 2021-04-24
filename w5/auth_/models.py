@@ -12,17 +12,6 @@ from utils.constants import USER_ROLES, USER_ROLE_PUBLISHER
 #         ordering = ('email',)
 
 
-# class Profile(models.Model):
-#     bio = models.TextField(max_length=500, blank=True)
-#     location = models.CharField(max_length=30, blank=True)
-#     birth_date = models.DateField(null=True, blank=True)
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         verbose_name = 'Профиль'
-#         verbose_name_plural = 'Профили'
-
-
 class MainUserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -70,3 +59,14 @@ class MainUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+
+class Profile(models.Model):
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    user = models.OneToOneField(MainUser, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'

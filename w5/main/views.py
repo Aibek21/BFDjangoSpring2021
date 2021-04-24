@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 
 from main.models import Book, Author
 from main.serializers import BookSerializer, AuthorSerializer, BookFullSerializer
@@ -85,6 +86,7 @@ class BookViewSet(mixins.ListModelMixin,
         return Response('OK')
 
 
-class AuthorApiView(generics.RetrieveAPIView):
+class AuthorApiViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+    parser_classes = [MultiPartParser, FormParser, JSONParser]

@@ -1,5 +1,6 @@
 from django.db import models
 from rest_framework import serializers
+from utils.validators import validate_size, validate_extension
 
 
 class Publisher(models.Model):
@@ -10,6 +11,9 @@ class Publisher(models.Model):
     website = models.CharField(max_length=100, null=True, blank=True, verbose_name='Веб сайт')
     city = models.CharField(max_length=100, null=True, blank=True, verbose_name='Город')
     country = models.CharField(max_length=100, null=True, blank=True, verbose_name='Страна')
+    photo = models.ImageField(upload_to='pub_photos',
+                              validators=[validate_size, validate_extension],
+                              null=True, blank=True)
 
     class Meta:
         verbose_name = 'Издатель'
@@ -27,6 +31,9 @@ class Author(models.Model):
     first_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Имя')
     last_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Фамилия')
     email = models.CharField(max_length=255, null=True, blank=True, verbose_name='Email')
+    photo = models.ImageField(upload_to='author_photos',
+                              validators=[validate_size, validate_extension],
+                              null=True, blank=True)
 
     class Meta:
         verbose_name = 'Автор'
