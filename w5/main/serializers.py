@@ -2,34 +2,6 @@ from rest_framework import serializers
 from main.models import Book, Author, Publisher
 
 
-class PublisherSerializer(serializers.Serializer):
-    first_name = serializers.CharField(write_only=True)
-    address = serializers.CharField(read_only=True)
-
-    # class Meta:
-    #     model = Publisher
-    #     fields = '__all__'
-
-    # def to_internal_value(self, data):
-    #     #return instance
-    #     pass
-    #
-    # def to_representation(self, instance):
-    #     #convert instance to dict
-    #     #return data
-    #     pass
-    #
-    # def create(self, validated_data):
-    #     #create instance
-    #     #Publisher.objects.create(**validated_data)
-    #     #return instance
-    #     pass
-    #
-    # def update(self, instance, validated_data):
-    #     #update instance
-    #     return instance
-
-
 class BookSerializer(serializers.ModelSerializer):
     # author = AuthorSerializer(required=True)
     # publisher = PublisherSerializer()
@@ -64,6 +36,40 @@ class BookSerializer(serializers.ModelSerializer):
     #
     # def update(self, instance, validated_data):
     #     pass
+
+
+class PublisherSerializer(serializers.ModelSerializer):
+    # books_count = serializers.IntegerField()
+    # max_pages = serializers.IntegerField()
+    books = BookSerializer(many=True)
+
+    class Meta:
+        model = Publisher
+        fields = ('id', 'name', 'address', 'website', 'books')
+        # 'books_count', 'max_pages')
+
+    # class Meta:
+    #     model = Publisher
+    #     fields = '__all__'
+
+    # def to_internal_value(self, data):
+    #     #return instance
+    #     pass
+    #
+    # def to_representation(self, instance):
+    #     #convert instance to dict
+    #     #return data
+    #     pass
+    #
+    # def create(self, validated_data):
+    #     #create instance
+    #     #Publisher.objects.create(**validated_data)
+    #     #return instance
+    #     pass
+    #
+    # def update(self, instance, validated_data):
+    #     #update instance
+    #     return instance
 
 
 class BookFullSerializer(BookSerializer):

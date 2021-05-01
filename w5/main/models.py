@@ -73,10 +73,15 @@ class Book(models.Model):
                                     validators=[num_pages_range_validation])
     is_active = models.BooleanField(default=True)
     authors = models.ManyToManyField(Author)
-    publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT, null=True, blank=True, verbose_name='Издатель')
+    publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT,
+                                  null=True, blank=True, verbose_name='Издатель',
+                                  related_name='books')
 
     # objects = BookManager()
     objects = BookQuerySet.as_manager()
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         ordering = ['-publication_date']
